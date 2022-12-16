@@ -44,6 +44,10 @@ func main() {
 		j := gjson.New(response.ReadAllString())
 		currentStatus := gconv.String(j.Get("resultData.value.buttonStatus.text"))
 
+		if len(currentStatus) == 0 {
+			glog.Error(ctx, "Current Status is empty!")
+			return
+		}
 		// 产品开售状态发生变更
 		if currentStatus != defaultStatus {
 			pushDeerList, err := g.Cfg().Get(ctx, "pushDeerList")
